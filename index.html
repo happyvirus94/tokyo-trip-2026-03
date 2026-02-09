@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>2026 도쿄 효도 여행 가이드</title>
+    <title>부모님과 함께 도쿄 여행</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Chosen Palette: Warm Neutral Harmony (Beige, Soft Brown, Slate) -->
-    <!-- Application Structure Plan: 
-         - Data Correction: Implemented Airbnb address (2-chōme-11-4 Mukōjima) and accurate Klook Fuji tour details.
-         - Logic Update: Improved modal data handling to ensure images and descriptions match the specific location IDs.
-         - Accessibility: Retained large touch targets and simplified layout for mobile usage.
-    -->
-
+    <!-- Chosen Palette: Warm Neutral Harmony -->
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -60,10 +54,6 @@
             -webkit-appearance: none;
         }
 
-        header {
-            padding-top: env(safe-area-inset-top);
-        }
-
         /* Modal Animation */
         #details-modal {
             transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -94,17 +84,17 @@
             <div class="p-6 space-y-4 overflow-y-auto">
                 <div>
                     <h3 id="modal-title" class="text-2xl font-bold text-gray-800">장소 이름</h3>
-                    <p id="modal-subtitle" class="text-amber-600 text-xs font-bold mt-1 uppercase tracking-wider">CATEGORY</p>
+                    <p id="modal-subtitle" class="text-amber-600 text-[10px] font-bold mt-1 uppercase tracking-widest">CATEGORY</p>
                 </div>
                 <p id="modal-desc" class="text-sm text-gray-600 leading-relaxed">상세 설명</p>
                 
-                <div class="bg-gray-50 p-4 rounded-2xl space-y-2 border border-gray-100">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase">주소 및 정보</p>
+                <div class="bg-gray-50 p-4 rounded-2xl space-y-2 border border-gray-100 text-sm">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase">위치 및 상세 정보</p>
                     <p id="modal-extra" class="text-xs text-gray-700 italic">추가 정보</p>
                 </div>
 
                 <div class="pt-2 flex gap-3">
-                    <a id="modal-map-link" href="#" target="_blank" class="flex-1 bg-amber-600 text-white text-center py-4 rounded-2xl font-bold text-sm shadow-lg shadow-amber-200 active:scale-95 transition-transform">
+                    <a id="modal-map-link" href="#" target="_blank" class="flex-1 bg-amber-600 text-white text-center py-4 rounded-2xl font-bold text-sm shadow-lg shadow-amber-200">
                         <i class="fa-solid fa-map-location-dot mr-2"></i>지도에서 보기
                     </a>
                 </div>
@@ -115,7 +105,7 @@
     <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-plane-departure text-amber-600 mr-2"></i>도쿄 효도 여행 2026</h1>
+            <h1 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-plane-departure text-amber-600 mr-2"></i>부모님과 함께 도쿄 여행</h1>
             <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-1 rounded-full font-bold">3박 4일</span>
         </div>
     </header>
@@ -123,23 +113,60 @@
     <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-4 space-y-6">
 
         <!-- Hero Section -->
-        <section class="text-center py-5 bg-white rounded-3xl border border-gray-100 shadow-sm px-6">
-            <h2 class="text-2xl font-bold text-gray-900 mb-1">부모님 힐링 도쿄 나들이</h2>
-            <p class="text-sm text-gray-400 font-medium">"걷는 걱정 마세요, 아들이 다 준비했습니다"</p>
-            <div class="mt-5 flex justify-center gap-6">
-                <div class="text-center">
-                    <div class="text-amber-600 text-[10px] font-bold">START</div>
-                    <div class="text-lg font-black text-gray-800">3/13</div>
+        <section class="text-center py-6 bg-white rounded-3xl border border-gray-100 shadow-sm px-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-1">부모님과 함께 도쿄 여행</h2>
+            <p class="text-xs text-gray-400 font-medium">2026.03.13(금) - 2026.03.16(월)</p>
+        </section>
+
+        <!-- Detailed Flight Info -->
+        <section class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
+            <h3 class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-ticket text-blue-500 mr-2"></i> 항공권 상세 스케줄</h3>
+            <div class="space-y-3">
+                <!-- Outbound -->
+                <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-bold text-blue-800 bg-blue-200 px-2 py-0.5 rounded">출국: 에어로케이 RF0324</span>
+                        <span class="text-[10px] font-bold text-gray-500">예약번호: VTV2AS</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-center">
+                            <div class="text-xl font-black text-gray-800">15:50</div>
+                            <div class="text-[10px] text-gray-500 font-bold">청주(CJJ)</div>
+                        </div>
+                        <div class="flex-grow flex flex-col items-center px-4">
+                            <div class="text-[9px] text-blue-400 font-bold mb-1">2시간 15분 비행</div>
+                            <div class="w-full h-px bg-blue-200 relative">
+                                <i class="fa-solid fa-plane absolute -top-1.5 left-1/2 -translate-x-1/2 text-[10px] text-blue-400"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-black text-gray-800">18:05</div>
+                            <div class="text-[10px] text-gray-500 font-bold">나리타(NRT)</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="w-px h-8 bg-gray-200 self-center"></div>
-                <div class="text-center">
-                    <div class="text-amber-600 text-[10px] font-bold">END</div>
-                    <div class="text-lg font-black text-gray-800">3/16</div>
-                </div>
-                <div class="w-px h-8 bg-gray-200 self-center"></div>
-                <div class="text-center">
-                    <div class="text-amber-600 text-[10px] font-bold">MEMBERS</div>
-                    <div class="text-lg font-black text-gray-800">4명</div>
+                <!-- Inbound -->
+                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-[10px] font-bold text-gray-700 bg-gray-200 px-2 py-0.5 rounded">귀국: 에어로케이 RF0391</span>
+                        <span class="text-[10px] font-bold text-gray-500">예약번호: VTV2AS</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-center">
+                            <div class="text-xl font-black text-gray-800">10:35</div>
+                            <div class="text-[10px] text-gray-500 font-bold">나리타(NRT)</div>
+                        </div>
+                        <div class="flex-grow flex flex-col items-center px-4">
+                            <div class="text-[9px] text-gray-400 font-bold mb-1">2시간 30분 비행</div>
+                            <div class="w-full h-px bg-gray-300 relative">
+                                <i class="fa-solid fa-plane absolute -top-1.5 left-1/2 -translate-x-1/2 text-[10px] text-gray-400 transform rotate-180"></i>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-black text-gray-800">13:05</div>
+                            <div class="text-[10px] text-gray-500 font-bold">청주(CJJ)</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -147,7 +174,7 @@
         <!-- Itinerary -->
         <section id="itinerary-section" class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-5 bg-amber-50/50 border-b border-amber-100">
-                <h3 class="text-md font-bold text-gray-800">📅 날짜별 상세 일정 (항목 클릭)</h3>
+                <h3 class="text-sm font-bold text-gray-800 uppercase tracking-tighter">📅 날짜별 상세 일정 (항목 클릭)</h3>
             </div>
             
             <div class="flex border-b border-gray-200 sticky top-[52px] bg-white z-30">
@@ -166,26 +193,26 @@
 
         <!-- Budget -->
         <section class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-            <h3 class="text-md font-bold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-coins text-amber-500 mr-2"></i> 현지 예상 경비</h3>
+            <h3 class="text-sm font-bold text-gray-800 mb-6 uppercase">💰 현지 지출 예상 (4인)</h3>
             <div class="chart-container mb-6">
                 <canvas id="budgetChart"></canvas>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-                <div class="p-3 bg-red-50 rounded-2xl border border-red-100 flex flex-col">
-                    <span class="text-[10px] text-red-800 font-bold uppercase">식비</span>
-                    <span class="font-bold text-gray-800 text-sm">160,000엔</span>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+                <div class="p-3 bg-red-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-red-800 font-bold">식비/야식</span>
+                    <span class="font-bold text-gray-800">16만엔</span>
                 </div>
-                <div class="p-3 bg-blue-50 rounded-2xl border border-blue-100 flex flex-col">
-                    <span class="text-[10px] text-blue-800 font-bold uppercase">투어</span>
-                    <span class="font-bold text-gray-800 text-sm">50,000엔</span>
+                <div class="p-3 bg-blue-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-blue-800 font-bold">투어/입장료</span>
+                    <span class="font-bold text-gray-800">5만엔</span>
                 </div>
-                <div class="p-3 bg-yellow-50 rounded-2xl border border-yellow-100 flex flex-col">
-                    <span class="text-[10px] text-yellow-800 font-bold uppercase">교통</span>
-                    <span class="font-bold text-gray-800 text-sm">45,000엔</span>
+                <div class="p-3 bg-yellow-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-yellow-800 font-bold">교통(택시)</span>
+                    <span class="font-bold text-gray-800">4.5만엔</span>
                 </div>
-                <div class="p-3 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col">
-                    <span class="text-[10px] text-gray-800 font-bold uppercase">쇼핑</span>
-                    <span class="font-bold text-gray-800 text-sm">30,000엔</span>
+                <div class="p-3 bg-gray-50 rounded-2xl flex justify-between items-center">
+                    <span class="text-gray-800 font-bold">기타/쇼핑</span>
+                    <span class="font-bold text-gray-800">3만엔</span>
                 </div>
             </div>
         </section>
@@ -193,35 +220,33 @@
     </main>
 
     <footer class="bg-gray-900 text-gray-500 py-10 text-center">
-        <p class="text-xs">2026 Tokyo Family Trip Guide v3.1</p>
-        <p class="text-[10px] mt-2 opacity-40">Handcrafted with care by your son</p>
+        <p class="text-[10px] font-bold uppercase tracking-widest opacity-40">2026 Tokyo Family Trip Guide</p>
     </footer>
 
     <script>
         const itineraryData = {
             1: [
-                { id: "nrt", time: "18:05", title: "나리타 공항 도착", desc: "입국 수속 및 짐 찾기", icon: "fa-plane-arrival", color: "blue", img: "https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?auto=format&fit=crop&w=600&q=80", subtitle: "FLIGHT ARRIVAL", fullDesc: "에어로케이 RF324편으로 나리타 공항에 도착합니다. 입국 후 액세스 특급을 타고 오시아게역으로 바로 이동할 예정입니다.", extra: "나리타 공항 제2터미널 / 수하물 15kg 확인", map: "https://www.google.com/maps/place/Narita+International+Airport" },
-                { id: "stay", time: "20:30", title: "숙소 체크인", desc: "무코지마 독채 하우스", icon: "fa-house", color: "green", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80", subtitle: "ACCOMMODATION", fullDesc: "에어비앤비로 예약한 무코지마 2초메 독채 숙소입니다. 2층 규모의 넓은 공간과 화장실 2개가 완비되어 있어 부모님께서 편안하게 머무르실 수 있습니다.", extra: "주소: 2-chōme-11-4 Mukōjima, Sumida City, Tokyo 131-0033", map: "https://www.google.com/maps/place/2-ch%C5%8Dme-11-4+Muk%C5%8Djima,+Sumida+City,+Tokyo+131-0033" },
-                { id: "sushi", time: "21:15", title: "첫 식사: 마루츠네 스시", desc: "현지인 추천 동네 스시집", icon: "fa-utensils", color: "amber", img: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80", subtitle: "LOCAL DINING", fullDesc: "숙소 도보 3분 거리의 정통 스시야입니다. 첫날 도착 후 피곤하실 부모님을 위해 가장 가까우면서도 훌륭한 평점을 가진 곳으로 선정했습니다.", extra: "도보 5초 거리에 코인 주차장도 있습니다.", map: "https://www.google.com/maps/search/Maru+Tsune+Sushi+Mukojima" },
-                { id: "life", time: "22:10", title: "라이프 마트 야식", desc: "회 & 사케 마감 세일 쇼핑", icon: "fa-basket-shopping", color: "purple", img: "https://images.unsplash.com/photo-1534723452862-4c874e70d6f3?auto=format&fit=crop&w=600&q=80", subtitle: "MART TOUR", fullDesc: "대형 마트 '라이프'에서 마감 세일 사시미와 일본 맥주를 구매합니다. 숙소에서 오붓하게 야식을 즐기는 첫날 밤!", extra: "추천: 마감 할인 초밥, 삿포로 클래식", map: "https://www.google.com/maps/search/Life+Supermarket+Oshiage" }
+                { id: "nrt", time: "18:05", title: "나리타 공항 도착", desc: "청주 출발 RF0324편 도착", icon: "fa-plane-arrival", color: "blue", img: "https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=600&auto=format&fit=crop", subtitle: "ARRIVAL", fullDesc: "에어로케이 직항편으로 나리타 공항 제2터미널에 도착합니다. 입국 심사를 마치고 오시아게역으로 이동하는 열차를 탑승합니다.", extra: "수하물 수취 후 게이세이 전철 인포메이션 이동", map: "https://www.google.com/maps/place/Narita+International+Airport" },
+                { id: "stay", time: "20:30", title: "숙소 체크인", desc: "무코지마 2초메 독채 하우스", icon: "fa-house", color: "green", img: "https://images.unsplash.com/photo-1505322103502-1f43196ef5d6?q=80&w=600&auto=format&fit=crop", subtitle: "AIRBNB", fullDesc: "예약하신 무코지마 2초메의 정갈한 독채 숙소입니다. 2층 규모로 방이 3개 있어 부모님께서 편안하게 머무르실 수 있습니다.", extra: "주소: 2-chōme-11-4 Mukōjima, Sumida City, Tokyo 131-0033", map: "https://www.google.com/maps/place/2-ch%C5%8Dme-11-4+Muk%C5%8Djima,+Sumida+City,+Tokyo+131-0033" },
+                { id: "sushi", time: "21:15", title: "석식: 마루츠네 스시", desc: "현지인이 아끼는 동네 스시집", icon: "fa-utensils", color: "amber", img: "https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=600&auto=format&fit=crop", subtitle: "LOCAL DINING", fullDesc: "숙소에서 도보 3분 거리의 스시야입니다. 신선한 계절 생선을 사용하여 정갈하게 제공되는 초밥으로 일본 여행의 첫 식사를 즐깁니다.", extra: "영업 종료 시간 확인 필수 / 현금 권장", map: "https://www.google.com/maps/search/Maru+Tsune+Sushi+Mukojima" },
+                { id: "life", time: "22:10", title: "라이프 마트 쇼핑", desc: "야식용 회 & 사케 구매", icon: "fa-basket-shopping", color: "purple", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600&auto=format&fit=crop", subtitle: "SUPERMARKET", fullDesc: "대형 마트 '라이프'에서 야식거리를 쇼핑합니다. 마감 세일 회와 일본 맥주, 사케를 사서 숙소에서 오붓하게 즐깁니다.", extra: "추천: 삿포로 클래식 맥주, 모둠 사시미 세트", map: "https://www.google.com/maps/search/Life+Supermarket+Oshiage" }
             ],
             2: [
-                { id: "asakusa", time: "11:00", title: "아사쿠사 센소지", desc: "카미나리몬 기념 촬영", icon: "fa-torii-gate", color: "red", img: "https://images.unsplash.com/photo-1590559063737-087f938a2ad5?auto=format&fit=crop&w=600&q=80", subtitle: "HISTORIC SITE", fullDesc: "도쿄에서 가장 오래된 사찰인 센소지를 방문합니다. 거대한 붉은 등 아래서 가족 사진을 찍고 나카미세 상점가를 구경합니다.", extra: "팁: 사람이 많으니 택시에서 내려서 조심히 이동하세요.", map: "https://www.google.com/maps/place/Senso-ji" },
-                { id: "rickshaw", time: "12:10", title: "아사쿠사 인력거", desc: "부모님 전용 가이드 투어", icon: "fa-bicycle", color: "gray", img: "https://images.unsplash.com/photo-1512401886136-1936365a6f23?auto=format&fit=crop&w=600&q=80", subtitle: "EXPERIENCE", fullDesc: "인력거 2대를 대절해 부모님을 모십니다. 걷지 않고 편안하게 앉아 에도 시대 분위기의 골목길 설명을 들으며 관광합니다.", extra: "예약 완료 / 탑승 장소: 카미나리몬 정문 부근", map: "https://www.google.com/maps/search/Asakusa+Rickshaw+Tour" },
-                { id: "imahan", time: "13:30", title: "중식: 이마한 스키야키", desc: "1895년 창업한 명품 와규", icon: "fa-bowl-food", color: "amber", img: "https://images.unsplash.com/photo-1581454045508-316e6d782987?auto=format&fit=crop&w=600&q=80", subtitle: "GOURMET", fullDesc: "입에서 살살 녹는 정통 스키야키입니다. 부모님께 일본 최고의 소고기 요리를 대접하는 품격 있는 점심 식사입니다.", extra: "국제거리 본점 / 런치 메뉴 1인 5,000~8,000엔", map: "https://www.google.com/maps/search/Asakusa+Imahan+Kokusai-dori" },
-                { id: "skytree", time: "19:00", title: "석식: 죠죠엔 와규", desc: "30층 야경 야키니쿠", icon: "fa-fire-burner", color: "amber", img: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=600&q=80", subtitle: "NIGHT VIEW", fullDesc: "스카이트리 타워 30층에서 도쿄 전체 야경을 감상하며 즐기는 고급 와규 구이입니다. 창가 자리를 미리 확보했습니다.", extra: "예약 시간: 19:00 / 소라마치 30층 위치", map: "https://www.google.com/maps/place/Jojoen+Tokyo+Skytree+Town+Solamachi" }
+                { id: "asakusa", time: "11:00", title: "아사쿠사 센소지", desc: "도쿄의 상징 카미나리몬 방문", icon: "fa-torii-gate", color: "red", img: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=600&auto=format&fit=crop", subtitle: "TRADITION", fullDesc: "도쿄에서 가장 오래된 절입니다. 붉은 등 아래에서 사진을 찍고 나카미세 상점가에서 전통 간식을 구경합니다.", extra: "택시 이동 권장 (보행 최소화)", map: "https://www.google.com/maps/place/Senso-ji" },
+                { id: "rickshaw", time: "12:10", title: "아사쿠사 인력거", desc: "앉아서 즐기는 골목 투어", icon: "fa-bicycle", color: "gray", img: "https://images.unsplash.com/photo-1526481280693-3bfa756180f9?q=80&w=600&auto=format&fit=crop", subtitle: "EXPERIENCE", fullDesc: "인력거 2대를 대절하여 아사쿠사 구석구석을 관광합니다. 부모님께서 걷지 않고 편안하게 풍경을 즐기실 수 있습니다.", extra: "예약 완료 / 탑승 장소 안내 예정", map: "https://www.google.com/maps/search/Asakusa+Rickshaw+Tour" },
+                { id: "imahan", time: "13:30", title: "중식: 이마한 스키야키", desc: "전통의 명가에서 즐기는 와규", icon: "fa-bowl-food", color: "amber", img: "https://images.unsplash.com/photo-1591814448473-7027b515b67a?q=80&w=600&auto=format&fit=crop", subtitle: "GOURMET", fullDesc: "1895년 창업한 스키야키 전문점입니다. 최고급 와규를 정성스럽게 조리하여 입 안에서 녹는 일본 최고의 맛을 대접합니다.", extra: "국제거리 본점 / 1인 약 6~8천엔 예산", map: "https://www.google.com/maps/search/Asakusa+Imahan+Kokusai-dori" },
+                { id: "jojoen", time: "19:00", title: "석식: 죠죠엔 와규", desc: "30층 야경 야키니쿠", icon: "fa-fire-burner", color: "amber", img: "https://images.unsplash.com/photo-1514355315815-2b64b0216b14?q=80&w=600&auto=format&fit=crop", subtitle: "NIGHT VIEW", fullDesc: "스카이트리 소라마치 30층에서 도쿄의 환상적인 야경을 보며 즐기는 고급 야키니쿠 식사입니다. 창가 자리를 미리 확보했습니다.", extra: "예약 완료 / 스카이트리 도보 1분", map: "https://www.google.com/maps/place/Jojoen+Tokyo+Skytree+Town+Solamachi" }
             ],
             3: [
-                { id: "fuji_start", time: "08:30", title: "후지산 투어 출발", desc: "도쿄역 마루노우치 북구 집결", icon: "fa-bus", color: "blue", img: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=600&q=80", subtitle: "KLOOK TOUR", fullDesc: "클룩 후지산 당일 투어를 시작합니다. 전용 버스를 타고 한국어 가이드와 함께 후지산의 명소 4곳을 방문합니다.", extra: "미팅 시간 엄수 (8:20분까지 도착 권장)", map: "https://www.google.com/maps/place/Tokyo+Station+Marunouchi+North+Exit" },
-                { id: "arakurayama", time: "10:30", title: "아라쿠라야마 센겐공원", desc: "5층탑과 후지산의 조화", icon: "fa-mountain", color: "red", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80", subtitle: "SCENIC SPOT", fullDesc: "일본 엽서에 가장 많이 나오는 장소입니다. 398개의 계단을 오르거나 슬로프로 이동해 후지산과 오층탑의 절경을 감상합니다.", extra: "투어의 하이라이트입니다. 사진 촬영 필수!", map: "https://www.google.com/maps/place/Arakurayama+Sengen+Park" },
-                { id: "oishi", time: "12:30", title: "가와구치코 오이시 공원", desc: "호숫가 산책 & 호토 중식", icon: "fa-water", color: "blue", img: "https://images.unsplash.com/photo-1578271147515-0589468cd27d?auto=format&fit=crop&w=600&q=80", subtitle: "LAKESIDE", fullDesc: "가와구치코 호수가 바로 보이는 공원입니다. 점심은 이 지역 명물인 된장 칼국수 '호토'를 정갈하게 먹습니다.", extra: "팁: 보라색 라벤더나 계절 꽃들이 아름다운 곳입니다.", map: "https://www.google.com/maps/place/Oishi+Park" },
-                { id: "oshino", time: "14:30", title: "오시노핫카이 마을", desc: "신비로운 투명 연못 8개", icon: "fa-leaf", color: "green", img: "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?auto=format&fit=crop&w=600&q=80", subtitle: "MYSTICAL VILLAGE", fullDesc: "후지산의 눈이 녹아 만든 신비롭고 투명한 연못들이 있는 마을입니다. 바닥까지 훤히 보이는 맑은 물이 장관입니다.", extra: "특산물인 쿠사모찌(쑥떡) 시식을 추천합니다.", map: "https://www.google.com/maps/place/Oshino+Hakkai" },
-                { id: "lawson", time: "16:10", title: "로손 후지산 포토존", desc: "SNS 화제의 인증샷 코스", icon: "fa-camera", color: "pink", img: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&w=600&q=80", subtitle: "PHOTO SPOT", fullDesc: "편의점 지붕 위로 후지산이 솟아있는 것처럼 보이는 화제의 장소입니다. 마지막으로 예쁜 기념 사진을 남기고 도쿄로 복귀합니다.", extra: "도로가 위험하니 가이드의 안내에 따라 촬영하세요.", map: "https://www.google.com/maps/place/Lawson+Kawaguchiko+Station+Front" },
-                { id: "shabuki", time: "19:30", title: "석식: 긴자 샤부키", desc: "프라이빗 룸 샤브샤브", icon: "fa-utensils", color: "amber", img: "https://images.unsplash.com/photo-1534422298391-e4f8c170db06?auto=format&fit=crop&w=600&q=80", subtitle: "FINAL DINNER", fullDesc: "여행의 마지막 밤을 기념하는 최고급 흑우 샤브샤브입니다. 모든 자리가 방으로 되어 있어 오붓하게 대화하기 좋습니다.", extra: "도쿄역 귀환 후 택시로 5분 거리", map: "https://www.google.com/maps/place/Ginza+Shabuki" }
+                { id: "arakurayama", time: "10:30", title: "아라쿠라야마 센겐공원", desc: "후지산 최고의 전망 명소", icon: "fa-mountain", color: "red", img: "https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?q=80&w=600&auto=format&fit=crop", subtitle: "KLOOK TOUR", fullDesc: "후지산의 장엄한 전경과 붉은 오층탑을 한꺼번에 담을 수 있는 일본 최고의 포토존입니다.", extra: "가이드 미팅: 도쿄역 마루노우치 북구 (08:20)", map: "https://www.google.com/maps/place/Arakurayama+Sengen+Park" },
+                { id: "oishi", time: "12:30", title: "가와구치코 오이시 공원", desc: "호숫가 산책 & 향토 점심", icon: "fa-water", color: "blue", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=600&auto=format&fit=crop", subtitle: "LAKESIDE", fullDesc: "후지산이 한눈에 보이는 호숫가 공원을 산책합니다. 점심은 이 지역 특산 요리인 된장 칼국수 '호토'를 먹습니다.", extra: "팁: 공원 내 소프트 아이스크림이 유명함", map: "https://www.google.com/maps/place/Oishi+Park" },
+                { id: "oshino", time: "14:30", title: "오시노핫카이 마을", desc: "투명한 8개의 신비로운 연못", icon: "fa-leaf", color: "green", img: "https://images.unsplash.com/photo-1536413661601-52a0a2569e96?q=80&w=600&auto=format&fit=crop", subtitle: "TRADITION", fullDesc: "후지산의 눈이 녹아 만든 깊고 투명한 8개의 연못이 있는 전통 마을입니다. 물의 맑음이 경이로운 수준입니다.", extra: "쑥떡(쿠사모찌) 시식 추천", map: "https://www.google.com/maps/place/Oshino+Hakkai" },
+                { id: "lawson", time: "16:10", title: "로손 후지산 포토존", desc: "SNS 화제의 인증샷 코스", icon: "fa-camera", color: "pink", img: "https://images.unsplash.com/photo-1608631163456-11f265ec79e5?q=80&w=600&auto=format&fit=crop", subtitle: "INSTAGRAMMABLE", fullDesc: "편의점 지붕 위로 후지산이 떠 있는 듯한 착시를 주는 유명한 촬영 명소입니다. 마지막 인증샷을 남깁니다.", extra: "투어의 마지막 코스 / 도로 안전 주의", map: "https://www.google.com/maps/place/Lawson+Kawaguchiko+Station+Front" },
+                { id: "shabuki", time: "19:30", title: "석식: 긴자 샤부키", desc: "프라이빗 룸에서 즐기는 샤브샤브", icon: "fa-utensils", color: "amber", img: "https://images.unsplash.com/photo-1608882585465-b772714a601e?q=80&w=600&auto=format&fit=crop", subtitle: "FINAL DINNER", fullDesc: "여행의 마지막 밤을 장식하는 최고급 흑우 샤브샤브입니다. 전 좌석이 방으로 되어 있어 오붓하게 식사가 가능합니다.", extra: "긴자 위치 / 마지막 밤 축배를!", map: "https://www.google.com/maps/place/Ginza+Shabuki" }
             ],
             4: [
-                { id: "ueno", time: "07:30", title: "우에노역 이동", desc: "스카이라이너 열차 탑승", icon: "fa-train", color: "gray", img: "https://images.unsplash.com/photo-1528150177508-7cc0c36cda5c?auto=format&fit=crop&w=600&q=80", subtitle: "DEPARTURE", fullDesc: "숙소 퇴실 후 택시를 타고 게이세이 우에노역으로 향합니다. 정해진 시간에 출발하는 스카이라이너 지정석에 앉아 공항으로 이동합니다.", extra: "티켓 미리 발권 확인 필수", map: "https://www.google.com/maps/place/Keisei+Ueno+Station" },
-                { id: "nrt_off", time: "10:35", title: "나리타 이륙", desc: "안전하게 한국으로 귀국", icon: "fa-plane-departure", color: "blue", img: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?auto=format&fit=crop&w=600&q=80", subtitle: "ARRIVING HOME", fullDesc: "즐거웠던 3박 4일 일정을 마무리하고 청주 공항으로 향합니다. 고생 많으셨습니다!", extra: "오후 1:05 청주 도착 예정", map: "https://www.google.com/maps/search/Narita+Airport+Terminal+2" }
+                { id: "skyliner", time: "07:30", title: "공항행 기차 탑승", desc: "우에노역에서 스카이라이너", icon: "fa-train", color: "gray", img: "https://images.unsplash.com/photo-1528150177508-7cc0c36cda5c?q=80&w=600&auto=format&fit=crop", subtitle: "DEPARTURE", fullDesc: "택시를 타고 우에노역으로 이동하여 가장 빠른 공항 특급 열차인 스카이라이너 지정석에 탑승합니다.", extra: "택시비 약 3천엔 예산 / 열차 예약 확인", map: "https://www.google.com/maps/place/Keisei+Ueno+Station" },
+                { id: "home", time: "10:35", title: "나리타 이륙", desc: "청주 도착 및 귀가", icon: "fa-plane-departure", color: "blue", img: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?q=80&w=600&auto=format&fit=crop", subtitle: "HEADING HOME", fullDesc: "즐거웠던 도쿄 일정을 마치고 안전하게 청주 공항으로 돌아갑니다. 고생 많으셨습니다!", extra: "오후 1:05 청주 도착 예정", map: "https://www.google.com/maps/place/Narita+International+Airport" }
             ]
         };
 
@@ -257,7 +282,7 @@
                         <div class="absolute left-0 top-1 w-10 h-10 rounded-full ${colorClasses[event.color]} flex items-center justify-center border-4 border-white shadow-md z-10 text-xs">
                             <i class="fa-solid ${event.icon}"></i>
                         </div>
-                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 shadow-sm active:bg-gray-100 active:scale-98 transition-all">
+                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 shadow-sm active:bg-gray-100 transition-all">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="font-bold text-gray-800 text-sm">${event.title}</span>
                                 <span class="text-[10px] font-bold text-gray-400 bg-white px-2 py-0.5 rounded-full border border-gray-100">${event.time}</span>
@@ -303,14 +328,13 @@
                     datasets: [{
                         data: [160000, 50000, 45000, 30000],
                         backgroundColor: ['#f87171', '#60a5fa', '#facc15', '#9ca3af'],
-                        borderWidth: 0,
-                        hoverOffset: 15
+                        borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    cutout: '65%',
+                    cutout: '70%',
                     plugins: {
                         legend: { display: false },
                         tooltip: {
