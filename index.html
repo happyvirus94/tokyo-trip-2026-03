@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>2026 도쿄 효도 여행 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chosen Palette: Warm Neutral Harmony (Beige, Soft Brown, Slate) -->
+    <!-- Application Structure Plan: 
+         - Mobile Optimization: Added touch-friendly padding, simplified grid for small screens, and ensured no horizontal scroll.
+         - iOS Fix: Added cursor-pointer, touch-action, and safe-area-inset for iPhone compatibility.
+         - Interaction: Tab switching and chart tooltips are fully functional on touch devices.
+    -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fcfbf9;
+            color: #333333;
+            -webkit-tap-highlight-color: transparent; /* 터치 시 하이라이트 제거 */
+            padding-bottom: env(safe-area-inset-bottom); /* 아이폰 하단 바 여백 */
+        }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            height: 280px;
+        }
+
+        .tab-active {
+            border-bottom: 4px solid #8d6e63;
+            color: #5d4037;
+            font-weight: 700;
+            background-color: rgba(141, 110, 99, 0.05);
+        }
+        .tab-inactive {
+            color: #9e9e9e;
+            font-weight: 400;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e0e0e0;
+            z-index: 0;
+        }
+
+        /* 아이폰 클릭 이슈 해결을 위한 스타일 */
+        .interactive-btn {
+            cursor: pointer; /* iOS에서 클릭 가능한 요소임을 명시 */
+            touch-action: manipulation; /* 더블탭 줌 방지 및 반응속도 향상 */
+            -webkit-appearance: none; /* 기본 버튼 스타일 제거 */
+        }
+
+        .interactive-btn:active {
+            opacity: 0.7;
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        /* 헤더 안전 영역 대응 */
+        header {
+            padding-top: env(safe-area-inset-top);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-lg font-bold text-gray-800"><i class="fa-solid fa-plane-departure text-amber-600 mr-2"></i>도쿄 효도 여행 2026</h1>
+            <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-1 rounded-full font-bold">3박 4일</span>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-4 space-y-6">
+
+        <!-- Intro -->
+        <section class="text-center py-2">
+            <h2 class="text-xl font-bold text-gray-900 mb-1">부모님과 함께하는 힐링 여행</h2>
+            <p class="text-sm text-gray-500 font-medium">"여유롭고 품격 있게, 아들이 모십니다"</p>
+        </section>
+
+        <!-- Key Stats -->
+        <section class="grid grid-cols-2 gap-3">
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+                <i class="fa-regular fa-calendar-check text-amber-600 mb-1"></i>
+                <span class="text-[10px] text-gray-400">일정</span>
+                <span class="text-sm font-bold text-gray-800 text-center leading-tight">3/13(금) - 3/16(월)</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+                <i class="fa-solid fa-taxi text-amber-600 mb-1"></i>
+                <span class="text-[10px] text-gray-400">이동수단</span>
+                <span class="text-sm font-bold text-gray-800">전 구간 택시</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+                <i class="fa-solid fa-won-sign text-amber-600 mb-1"></i>
+                <span class="text-[10px] text-gray-400">예상 경비</span>
+                <span class="text-sm font-bold text-gray-800">약 270만원</span>
+            </div>
+            <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center">
+                <i class="fa-solid fa-users text-amber-600 mb-1"></i>
+                <span class="text-[10px] text-gray-400">인원</span>
+                <span class="text-sm font-bold text-gray-800">성인 4명</span>
+            </div>
+        </section>
+
+        <!-- Itinerary (Updated with iOS Fix) -->
+        <section id="itinerary-section" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="p-4 bg-amber-50 border-b border-amber-100">
+                <h3 class="text-md font-bold text-gray-800">📅 날짜별 상세 일정</h3>
+            </div>
+            
+            <!-- Sticky tab container with higher z-index -->
+            <div class="flex border-b border-gray-200 sticky top-[52px] bg-white z-30">
+                <button onclick="switchTab(1)" id="tab-1" class="flex-1 py-3 text-center text-sm transition-all tab-active interactive-btn">13(금)</button>
+                <button onclick="switchTab(2)" id="tab-2" class="flex-1 py-3 text-center text-sm transition-all tab-inactive interactive-btn">14(토)</button>
+                <button onclick="switchTab(3)" id="tab-3" class="flex-1 py-3 text-center text-sm transition-all tab-inactive interactive-btn">15(일)</button>
+                <button onclick="switchTab(4)" id="tab-4" class="flex-1 py-3 text-center text-sm transition-all tab-inactive interactive-btn">16(월)</button>
+            </div>
+
+            <div class="p-4 min-h-[300px]">
+                <div id="day-content" class="space-y-4 relative">
+                    <!-- JS Content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Logistics -->
+        <section class="space-y-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-md font-bold text-gray-800 mb-3 flex items-center"><i class="fa-solid fa-plane text-blue-500 mr-2"></i> 항공편 (청주 ↔ 나리타)</h3>
+                <div class="flex items-center justify-between bg-blue-50 p-3 rounded-xl mb-3">
+                    <div class="text-center">
+                        <div class="text-xs text-blue-600 font-bold mb-1">출국 (3/13)</div>
+                        <div class="text-lg font-bold text-gray-800">15:50</div>
+                    </div>
+                    <div class="text-blue-300 px-2"><i class="fa-solid fa-arrow-right-long"></i></div>
+                    <div class="text-center">
+                        <div class="text-xs text-blue-600 font-bold mb-1">도착 (3/13)</div>
+                        <div class="text-lg font-bold text-gray-800">18:05</div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl">
+                    <div class="text-center">
+                        <div class="text-xs text-gray-500 font-bold mb-1">귀국 (3/16)</div>
+                        <div class="text-lg font-bold text-gray-800">10:35</div>
+                    </div>
+                    <div class="text-gray-300 px-2"><i class="fa-solid fa-arrow-right-long"></i></div>
+                    <div class="text-center">
+                        <div class="text-xs text-gray-500 font-bold mb-1">도착 (3/16)</div>
+                        <div class="text-lg font-bold text-gray-800">13:05</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="text-md font-bold text-gray-800 mb-3 flex items-center"><i class="fa-solid fa-house-user text-green-600 mr-2"></i> 숙소 (무코지마 독채)</h3>
+                <div class="text-sm text-gray-600 space-y-2">
+                    <p class="font-bold text-gray-800">🏠 벨 빌 신라쿠사카</p>
+                    <p>• 방 3개, 화장실 2개 (부모님과 넉넉하게 사용)</p>
+                    <p>• 라이프 마트 도보권 (밤마다 초밥 쇼핑 가능!)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget -->
+        <section class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
+            <h3 class="text-md font-bold text-gray-800 mb-4">💰 현지 예상 경비 (4인 합계)</h3>
+            <div class="chart-container mb-4">
+                <canvas id="budgetChart"></canvas>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-[11px]">
+                <div class="flex justify-between p-2 bg-red-50 rounded text-red-700 font-bold"><span>식비/야식</span><span>16만엔</span></div>
+                <div class="flex justify-between p-2 bg-blue-50 rounded text-blue-700 font-bold"><span>투어/체험</span><span>5만엔</span></div>
+                <div class="flex justify-between p-2 bg-yellow-50 rounded text-yellow-700 font-bold"><span>이동(택시)</span><span>4.5만엔</span></div>
+                <div class="flex justify-between p-2 bg-gray-50 rounded text-gray-700 font-bold"><span>비상금</span><span>3만엔</span></div>
+            </div>
+        </section>
+
+        <!-- Mart Tour -->
+        <section class="bg-gradient-to-br from-amber-50 to-orange-50 p-5 rounded-2xl border border-amber-100">
+            <h3 class="text-md font-bold text-amber-800 mb-3 flex items-center"><i class="fa-solid fa-basket-shopping mr-2"></i> 야식은 '라이프 마트'에서!</h3>
+            <p class="text-xs text-amber-700 leading-relaxed mb-3">숙소 근처 대형 마트입니다. 저녁 7시 이후 '할인 스티커'가 붙은 회와 초밥을 사서 숙소에서 편하게 한잔하세요!</p>
+            <div class="text-xs bg-white/60 p-3 rounded-lg border border-amber-200">
+                <strong>추천 안주:</strong> 모둠 사시미, 야키토리, 삿포로 클래식 맥주, 지역 사케
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center">
+        <p class="text-xs">2026 도쿄 효도 여행 가이드 v2.1</p>
+        <p class="text-[10px] mt-1 opacity-50">아들이 직접 제작하였습니다 <i class="fa-solid fa-heart text-red-500"></i></p>
+    </footer>
+
+    <script>
+        const itineraryData = {
+            1: [
+                { time: "18:05", title: "나리타 공항 도착", desc: "입국 수속 및 짐 찾기", icon: "fa-plane-arrival", color: "blue" },
+                { time: "20:20", title: "숙소 도착 (택시)", desc: "역에서 택시로 편하게 이동", icon: "fa-house", color: "green" },
+                { time: "21:00", title: "첫 식사: 현지 스시", desc: "동네 스시집에서 정갈한 첫 끼", icon: "fa-utensils", color: "amber" },
+                { time: "22:00", title: "마트 야식 쇼핑", desc: "회와 술 사서 숙소 파티!", icon: "fa-wine-glass", color: "purple" }
+            ],
+            2: [
+                { time: "11:00", title: "아사쿠사 센소지", desc: "도쿄의 경주! 기념사진 촬영", icon: "fa-torii-gate", color: "red" },
+                { time: "12:00", title: "인력거 투어", desc: "부모님 무릎 보호! 편하게 구경", icon: "fa-bicycle", color: "gray" },
+                { time: "13:30", title: "점심: 정통 스키야키", desc: "입에서 녹는 와규 대접", icon: "fa-bowl-food", color: "amber" },
+                { time: "19:00", title: "저녁: 스카이트리 와규", desc: "야경 보며 즐기는 야키니쿠", icon: "fa-fire-burner", color: "amber" }
+            ],
+            3: [
+                { time: "08:30", title: "후지산 투어 시작", desc: "도쿄역에서 전용 버스 탑승", icon: "fa-bus", color: "blue" },
+                { time: "12:30", title: "후지산 절경 관광", desc: "투명한 연못 마을과 산책", icon: "fa-mountain", color: "green" },
+                { time: "19:30", title: "마지막 만찬: 샤브샤브", desc: "긴자에서 즐기는 최고급 요리", icon: "fa-utensils", color: "amber" }
+            ],
+            4: [
+                { time: "07:30", title: "공항으로 출발", desc: "스카이라이너 기차 탑승", icon: "fa-train", color: "blue" },
+                { time: "10:35", title: "나리타 이륙", desc: "즐거웠던 여행 마무리", icon: "fa-plane-departure", color: "gray" },
+                { time: "13:05", title: "청주 공항 도착", desc: "집으로 안전하게 귀가", icon: "fa-house-chimney", color: "green" }
+            ]
+        };
+
+        function renderTimeline(day) {
+            const container = document.getElementById('day-content');
+            const events = itineraryData[day];
+            let html = '<div class="timeline-line"></div>';
+
+            events.forEach((event) => {
+                const colorClasses = {
+                    blue: 'bg-blue-100 text-blue-600', amber: 'bg-amber-100 text-amber-600',
+                    green: 'bg-green-100 text-green-600', red: 'bg-red-100 text-red-600',
+                    purple: 'bg-purple-100 text-purple-600', gray: 'bg-gray-100 text-gray-600',
+                    yellow: 'bg-yellow-100 text-yellow-600', pink: 'bg-pink-100 text-pink-600'
+                };
+
+                html += `
+                    <div class="relative pl-10">
+                        <div class="absolute left-0 top-0 w-10 h-10 rounded-full ${colorClasses[event.color]} flex items-center justify-center border-2 border-white shadow-sm z-10 text-xs">
+                            <i class="fa-solid ${event.icon}"></i>
+                        </div>
+                        <div class="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-gray-800 text-sm">${event.title}</span>
+                                <span class="text-[10px] font-bold text-gray-400">${event.time}</span>
+                            </div>
+                            <p class="text-gray-500 text-[11px] leading-tight">${event.desc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function switchTab(day) {
+            // iOS에서의 안정적인 동작을 위해 setTimeout 사용 (선택 사항)
+            for(let i=1; i<=4; i++) {
+                const tab = document.getElementById(`tab-${i}`);
+                if (i === day) {
+                    tab.classList.remove('tab-inactive');
+                    tab.classList.add('tab-active');
+                } else {
+                    tab.classList.add('tab-inactive');
+                    tab.classList.remove('tab-active');
+                }
+            }
+            renderTimeline(day);
+        }
+
+            // iOS에서 명시적으로 터치 이벤트를 처리하기 위한 리스너 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            switchTab(1);
+
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['식비/야식', '투어/체험', '이동비', '비상금'],
+                    datasets: [{
+                        data: [160000, 50000, 45000, 30000],
+                        backgroundColor: ['#f87171', '#60a5fa', '#facc15', '#9ca3af'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            bodyFont: { size: 14 },
+                            callbacks: {
+                                label: function(context) { return ' ' + context.label + ': ' + context.raw.toLocaleString() + '엔'; }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
