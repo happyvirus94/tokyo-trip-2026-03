@@ -12,103 +12,89 @@
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #fcfbf9;
+            background-color: #fcfcfc;
             color: #333333;
             -webkit-tap-highlight-color: transparent;
             padding-bottom: env(safe-area-inset-bottom);
         }
         
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            height: 220px;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .tab-active {
-            border-bottom: 4px solid #8d6e63;
-            color: #5d4037;
-            font-weight: 700;
-            background-color: rgba(141, 110, 99, 0.05);
+            color: #b38b6d;
+            font-weight: 800;
+            position: relative;
         }
-        .tab-inactive {
-            color: #9e9e9e;
-            font-weight: 400;
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background-color: #b38b6d;
+            border-radius: 2px;
         }
+        .tab-inactive { color: #ced4da; }
         
         .timeline-line {
             position: absolute;
-            left: 20px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background-color: #e0e0e0;
+            left: 24px;
+            top: 20px;
+            bottom: 20px;
+            width: 1px;
+            border-left: 1px dashed #dee2e6;
             z-index: 0;
         }
 
-        .interactive-btn {
-            cursor: pointer;
-            touch-action: manipulation;
-            -webkit-appearance: none;
-        }
-
-        #details-modal {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
         .modal-content {
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .modal-hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-        .modal-hidden .modal-content {
-            transform: scale(0.9) translateY(20px);
-        }
+        .modal-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .modal-hidden .modal-content { transform: translateY(100%); }
 
-        #modal-desc {
-            white-space: pre-wrap;
+        #modal-desc { white-space: pre-wrap; }
+        
+        .event-card {
+            transition: all 0.2s ease;
         }
-
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: #fff;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            border: 1px solid #eee;
-        }
+        .event-card:active { transform: scale(0.97); background-color: #f8f9fa; }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
 
-    <!-- Modal for Place Details -->
-    <div id="details-modal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 modal-hidden">
-        <div class="modal-content bg-white w-full max-w-md rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
-            <div id="modal-image" class="h-48 w-full bg-cover bg-center bg-gray-200 relative">
-                <button onclick="closeModal()" class="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white w-8 h-8 rounded-full flex items-center justify-center">
+    <!-- Modal -->
+    <div id="details-modal" class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm modal-hidden" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-content bg-white w-full max-w-lg rounded-t-[40px] sm:rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+            <div id="modal-image" class="h-64 w-full bg-cover bg-center relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                <button onclick="closeModal()" class="absolute top-6 right-6 bg-white/10 backdrop-blur-md text-white w-10 h-10 rounded-full flex items-center justify-center border border-white/20">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
-            </div>
-            <div class="p-6 space-y-4 overflow-y-auto">
-                <div>
-                    <h3 id="modal-title" class="text-xl font-bold text-gray-800">장소 이름</h3>
-                    <p id="modal-subtitle" class="text-amber-600 text-[10px] font-bold mt-1 uppercase tracking-widest">CATEGORY</p>
+                <div class="absolute bottom-6 left-8 text-white">
+                    <p id="modal-subtitle" class="text-[10px] font-bold uppercase tracking-[0.2em] opacity-80 mb-1">CATEGORY</p>
+                    <h3 id="modal-title" class="text-2xl font-black tracking-tight">장소 이름</h3>
                 </div>
-                <div id="modal-desc" class="text-sm text-gray-600 leading-relaxed border-l-2 border-amber-100 pl-3">상세 설명</div>
+            </div>
+            <div class="p-8 space-y-6 overflow-y-auto no-scrollbar">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2 text-amber-700">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <span class="text-xs font-bold uppercase tracking-widest">상세 이동 경로 및 안내</span>
+                    </div>
+                    <div id="modal-desc" class="text-[14px] text-gray-600 leading-relaxed font-medium"></div>
+                </div>
                 
-                <div class="bg-gray-50 p-4 rounded-2xl space-y-2 border border-gray-100 text-sm">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase">위치 및 상세 정보</p>
-                    <div id="modal-extra" class="text-xs text-gray-700 italic">추가 정보</div>
+                <div class="bg-gray-50 p-5 rounded-3xl border border-gray-100">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase mb-2">Location Information</p>
+                    <div id="modal-extra" class="text-xs text-gray-700 font-bold"></div>
                 </div>
 
-                <div class="pt-2 flex gap-3">
-                    <a id="modal-map-link" href="#" target="_blank" class="flex-1 bg-amber-600 text-white text-center py-3 rounded-xl font-bold text-sm shadow-md">
-                        <i class="fa-solid fa-map-location-dot mr-2"></i>지도에서 보기
+                <div class="flex gap-3 pt-2">
+                    <a id="modal-map-link" href="#" target="_blank" class="flex-1 bg-gray-900 text-white text-center py-4 rounded-2xl font-bold text-sm">
+                        <i class="fa-solid fa-location-dot mr-2"></i>지도에서 위치 확인
                     </a>
                 </div>
             </div>
@@ -116,185 +102,179 @@
     </div>
 
     <!-- Header -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <h1 class="text-md font-bold text-gray-800"><i class="fa-solid fa-plane-departure text-amber-600 mr-2"></i>부모님과 도쿄 여행</h1>
-            <span class="text-[10px] bg-amber-100 text-amber-800 px-2 py-1 rounded-full font-bold">3박 4일</span>
+    <header class="bg-white/90 backdrop-blur-md sticky top-0 z-50 px-6 py-5 border-b border-gray-50 flex justify-between items-center">
+        <div>
+            <h1 class="text-xl font-black text-gray-900 tracking-tighter">Family Trip <span class="text-amber-800">TOKYO</span></h1>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">March 13 - 16, 2026</p>
+        </div>
+        <div class="flex flex-col items-end">
+            <span class="text-[10px] bg-amber-50 text-amber-800 px-3 py-1 rounded-full font-black uppercase">4 People</span>
         </div>
     </header>
 
-    <main class="flex-grow max-w-4xl mx-auto w-full px-4 py-4 space-y-6">
+    <main class="flex-grow max-w-xl mx-auto w-full px-5 py-8 space-y-10">
 
-        <!-- Flight Summary -->
-        <section class="bg-white p-4 rounded-3xl shadow-sm border border-gray-100">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xs font-bold text-gray-500 uppercase">Flight Schedule</h3>
-                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">에어로케이 (T3 이용)</span>
+        <!-- Itinerary Section -->
+        <section class="bg-white rounded-[48px] shadow-2xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-50 sticky top-[72px] bg-white/95 backdrop-blur-sm z-30">
+                <button onclick="switchTab(1)" id="tab-1" class="flex-1 py-6 text-xs transition-all tab-active font-black">13(금)</button>
+                <button onclick="switchTab(2)" id="tab-2" class="flex-1 py-6 text-xs transition-all tab-inactive font-black">14(토)</button>
+                <button onclick="switchTab(3)" id="tab-3" class="flex-1 py-6 text-xs transition-all tab-inactive font-black">15(일)</button>
+                <button onclick="switchTab(4)" id="tab-4" class="flex-1 py-6 text-xs transition-all tab-inactive font-black">16(월)</button>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="border-r border-gray-100 pr-4">
-                    <p class="text-[10px] text-gray-400 font-bold mb-1">03/13(금) 출국</p>
-                    <div class="flex justify-between items-end">
-                        <span class="text-lg font-black">15:50</span>
-                        <span class="text-[10px] text-gray-400 mb-1">CJJ → NRT</span>
-                        <span class="text-lg font-black text-amber-600">18:05</span>
+
+            <!-- Content Area -->
+            <div class="p-8 pt-12 min-h-[500px]">
+                <div id="day-content" class="space-y-10 relative">
+                    <!-- Cards will be injected here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Prep Checklist for Mobile -->
+        <section class="space-y-4">
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest px-2">Essential Prep</h3>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-white p-5 rounded-[32px] border border-gray-100 shadow-sm flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-black text-gray-800">Visit Japan</p>
+                        <p class="text-[9px] text-gray-400">QR 캡처 완료</p>
                     </div>
                 </div>
-                <div class="pl-4">
-                    <p class="text-[10px] text-gray-400 font-bold mb-1">03/16(월) 귀국</p>
-                    <div class="flex justify-between items-end">
-                        <span class="text-lg font-black">10:35</span>
-                        <span class="text-[10px] text-gray-400 mb-1">NRT → CJJ</span>
-                        <span class="text-lg font-black text-green-600">13:05</span>
+                <div class="bg-white p-5 rounded-[32px] border border-gray-100 shadow-sm flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
+                        <i class="fa-solid fa-sim-card"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-black text-gray-800">e-SIM</p>
+                        <p class="text-[9px] text-gray-400">4인 기기 체크</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Itinerary Tabs -->
-        <section id="itinerary-section" class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <div class="flex border-b border-gray-100 sticky top-[48px] bg-white z-30">
-                <button onclick="switchTab(1)" id="tab-1" class="flex-1 py-4 text-center text-xs transition-all tab-active interactive-btn">13(금)</button>
-                <button onclick="switchTab(2)" id="tab-2" class="flex-1 py-4 text-center text-xs transition-all tab-inactive interactive-btn">14(토)</button>
-                <button onclick="switchTab(3)" id="tab-3" class="flex-1 py-4 text-center text-xs transition-all tab-inactive interactive-btn">15(일)</button>
-                <button onclick="switchTab(4)" id="tab-4" class="flex-1 py-4 text-center text-xs transition-all tab-inactive interactive-btn">16(월)</button>
-            </div>
-
-            <div class="p-5 min-h-[400px]">
-                <div id="day-content" class="space-y-5 relative">
-                    <!-- Dynamic Content -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Preparation Checklist -->
-        <section class="bg-white p-5 rounded-3xl shadow-sm border border-gray-100">
-            <h3 class="text-sm font-bold text-gray-800 mb-4 flex items-center"><i class="fa-solid fa-check-double text-green-500 mr-2"></i> 필수 체크리스트</h3>
-            <div class="space-y-2">
-                <div class="checklist-item">
-                    <i class="fa-solid fa-sim-card text-amber-500"></i>
-                    <div class="flex-1">
-                        <p class="text-xs font-bold">e-SIM 구매 및 등록</p>
-                        <p class="text-[10px] text-gray-400">부모님 폰 포함 4인 모두 확인</p>
-                    </div>
-                </div>
-                <div class="checklist-item">
-                    <i class="fa-solid fa-qrcode text-blue-500"></i>
-                    <div class="flex-1">
-                        <p class="text-xs font-bold">Visit Japan Web 등록</p>
-                        <p class="text-[10px] text-gray-400">입국 심사 & 세관 신고 QR 캡처</p>
-                    </div>
-                </div>
-                <div class="checklist-item">
-                    <i class="fa-solid fa-wallet text-red-500"></i>
-                    <div class="flex-1">
-                        <p class="text-xs font-bold">환전 및 트래블로그 확인</p>
-                        <p class="text-[10px] text-gray-400">현금(1,000엔권 위주)과 카드 비중 조절</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Budget Chart -->
-        <section class="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-            <h3 class="text-xs font-bold text-gray-400 mb-4 uppercase">💰 예상 현지 지출</h3>
-            <div class="chart-container">
+        <!-- Budget Section (Restored to fix JS error) -->
+        <section class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100">
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">💰 예상 현지 지출 (4인)</h3>
+            <div class="h-[220px] relative">
                 <canvas id="budgetChart"></canvas>
             </div>
         </section>
 
     </main>
 
-    <footer class="bg-gray-900 text-gray-500 py-8 text-center">
-        <p class="text-[9px] font-bold uppercase tracking-widest opacity-40">2026 Tokyo Family Trip Guide</p>
+    <footer class="bg-gray-50 py-16 text-center">
+        <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.3em]">Enjoy Your Journey</p>
     </footer>
 
     <script>
         const itineraryData = {
             1: [
                 { 
-                    id: "arrival", time: "18:05", title: "나리타 T3 도착 및 이동", desc: "T3 → T2 이동 후 스카이액세스 탑승", icon: "fa-plane-arrival", color: "blue", img: "https://images.unsplash.com/photo-1556388158-158ea5ccacbd?q=80&w=600&auto=format&fit=crop", subtitle: "ARRIVAL", 
-                    fullDesc: `[공항 이동 가이드]
-1. 에어로케이는 제3터미널(T3)에 도착합니다. T3에는 기차역이 없으므로 '제2터미널(T2)'로 이동해야 합니다. 
-2. 부모님과 함께라면 무료 셔틀버스(약 5분)를 이용하세요. (보행 전용 트랙은 600m로 멉니다.)
-3. T2 지하 1층 오렌지색 매표소에서 'Access Express' 티켓을 구매합니다 (1,190엔 / 4인 약 4,800엔).
-4. 'Haneda Airport' 또는 'Nishimagome'행 열차를 탑승합니다.
-5. 오시아게역 하차 후 A2/A3 출구로 나와 택시 또는 도보로 숙소 이동.`, 
-                    extra: "Access Express는 2터미널이 두 번째 역이라 좌석 확보가 수월함", map: "https://www.google.com/maps/place/Narita+International+Airport+Terminal+3" 
+                    id: "nrt", time: "18:05", title: "나리타 제3터미널 도착", desc: "도착 후 셔틀버스로 T2 이동하여 기차 탑승", icon: "fa-plane-arrival", color: "blue", 
+                    img: "image_e08063.jpg", subtitle: "ARRIVAL", 
+                    fullDesc: `[나리타 공항 T3 → 시내 진입 가이드]
+
+1. 터미널 이동: 에어로케이는 제3터미널(T3)에 내립니다. 기차역이 없으므로 무료 셔틀버스를 타고 제2터미널(T2)로 가야 합니다. (셔틀 5분 / 도보 비추천)
+2. 티켓 구매: T2 지하 1층 'Keisei Line' 매표기에서 'Access Express(주황색)' 티켓을 구매합니다. (오시아게행 확인, 1,190엔)
+3. 열차 탑승: 1번 승강장에서 'Haneda Airport' 또는 'Nishimagome'행 탑승.
+   ※ T2는 두 번째 역이라 자리가 넉넉합니다. 타자마자 부모님 자리를 먼저 사수하세요!`, 
+                    extra: "나리타 공항 제3터미널 (NRT T3)", query: "Narita Airport Terminal 3"
                 },
-                { id: "sushiro", time: "21:00", title: "석식: 스시로 아사쿠사 아즈마바시점", desc: "체크인 후 즐기는 가성비 회전초밥", icon: "fa-utensils", color: "amber", img: "https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=600&auto=format&fit=crop", subtitle: "DINING", 
-                    fullDesc: `숙소 체크인 후 도보 또는 짧은 택시 거리의 스시로에서 식사를 합니다. 
-태블릿으로 주문이 가능해 부모님과 편하게 다양한 초밥을 즐길 수 있습니다.`, 
-                    extra: "영업 마감 시간 확인 필수 (보통 22:30~23:00)", map: "https://www.google.com/maps/search/Sushiro+Asakusa+Azumabashi" 
+                { id: "checkin", time: "20:30", title: "숙소 체크인", desc: "오시아게역 A2/A3 출구 이용", icon: "fa-house-chimney", color: "green", 
+                    img: "https://images.unsplash.com/photo-1505322103502-1f43196ef5d6?auto=format&fit=crop&q=80&w=1000", subtitle: "STAY", 
+                    fullDesc: `오시아게(Oshiage)역에서 하차합니다. 
+짐이 많으므로 A2 또는 A3 출구 근처에서 택시를 잡아 '무코지마 2-11-4(墨田区向島2-11-4)' 주소를 보여주세요. 
+기본요금 거리지만 부모님의 피로도를 줄이는 핵심 포인트입니다.`, 
+                    extra: "墨田区向島2-11-4", query: "2-chōme-11-4 Mukōjima, Sumida City"
                 },
-                { id: "mart", time: "22:00", title: "현지 마트 쇼핑", desc: "벨크(Belc) 또는 라이프 마트", icon: "fa-basket-shopping", color: "purple", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600&auto=format&fit=crop", subtitle: "SHOPPING", 
-                    fullDesc: `현지인들이 이용하는 마트에서 맥주와 안주를 구매합니다. 
-라이프 마트보다 벨크(Belc)가 더 저렴한 경우가 많으니 가까운 곳을 선택하세요. 
-일본 한정 맥주와 제철 과일을 추천합니다.`, 
-                    extra: "벨크 포르테 오시아게점 추천 (24:00 마감)", map: "https://www.google.com/maps/search/Belc+Forte+Oshiage" 
+                { id: "sushiro", time: "21:15", title: "스시로 아사쿠사 아즈마바시점", desc: "첫날 저녁 가성비 초밥", icon: "fa-utensils", color: "amber", 
+                    img: "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&q=80&w=1000", subtitle: "DINNER", 
+                    fullDesc: `숙소에서 도보 또는 택시로 5분 거리에 있는 회전초밥집입니다. 
+한국어 태블릿 주문이 가능해 부모님도 직접 고르는 재미가 있습니다. 늦은 시간이라 웨이팅이 거의 없을 시간대입니다.`, 
+                    extra: "Sushiro Asakusa Azumabashi", query: "Sushiro Asakusa Azumabashi"
+                },
+                { id: "belc", time: "22:30", title: "벨크(Belc) 마트 쇼핑", desc: "현지인 마트에서 맥주 & 안주 구매", icon: "fa-basket-shopping", color: "purple", 
+                    img: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000", subtitle: "SHOP", 
+                    fullDesc: `숙소에서 가장 가까운 대형 마트 벨크 포르테 오시아게점입니다. 
+24시까지 운영하므로 숙소 들어가기 전 맥주와 일본 과일 등을 사기에 최적입니다.`, 
+                    extra: "Belc Forte Oshiage", query: "Belc Forte Oshiage"
                 }
             ],
             2: [
-                { id: "breakfast_shinpachi", time: "08:00", title: "조식: 신파치 쇼쿠도", desc: "아사쿠사 일본 가정식 생선구이", icon: "fa-bowl-food", color: "green", img: "https://images.unsplash.com/photo-1591814448473-7027b515b67a?q=80&w=600&auto=format&fit=crop", subtitle: "BREAKFAST", 
-                    fullDesc: `아사쿠사 전철역 근처의 신파치 쇼쿠도에서 일본식 아침 식사를 합니다. 
-숯불에 구운 생선구이와 밥, 미소시루가 나오는 정갈한 한 끼입니다. 부모님 입맛에 가장 잘 맞는 메뉴입니다.`, 
-                    extra: "Shinpachi Shokudo Asakusa 위치 확인", map: "https://www.google.com/maps/search/Shinpachi+Shokudo+Asakusa" 
+                { id: "shinpachi", time: "08:00", title: "신파치 쇼쿠도 아사쿠사", desc: "숯불 생선구이 정갈한 가정식", icon: "fa-bowl-rice", color: "green", 
+                    img: "image_e07fed.jpg", subtitle: "BREAKFAST", 
+                    fullDesc: `부모님이 가장 좋아하실 숯불 생선구이 백반입니다. 
+따끈한 밥과 미소된장국으로 활기찬 하루를 시작하세요.`, 
+                    extra: "Shinpachi Shokudo Asakusa", query: "Shinpachi Shokudo Asakusa"
                 },
-                { id: "move_ebisu", time: "10:30", title: "에비스 이동 및 관람", desc: "에비스 브루어리 도쿄 맥주 시음", icon: "fa-beer-mug-empty", color: "amber", img: "https://images.unsplash.com/photo-1538488881038-e252a119ace7?q=80&w=600&auto=format&fit=crop", subtitle: "BREWERY", 
-                    fullDesc: `[이동 경로] 아사쿠사역(긴자선) → 긴자역(히비야선 환승) → 에비스역 (약 54분 / 410엔)
-에비스 가든 플레이스 내의 브루어리 도쿄를 관람합니다. 
-맥주 박물관 구경 후 1시~2시 사이에 신선한 맥주를 시음합니다.`, 
-                    extra: "에비스 스카이워크(무빙워크)를 이용하여 체력 안배", map: "https://www.google.com/maps/place/YEBISU+BREWERY+TOKYO" 
+                { id: "ebisu", time: "11:30", title: "에비스 브루어리 도쿄", desc: "맥주 박물관 및 신선한 시음", icon: "fa-beer-mug-empty", color: "amber", 
+                    img: "https://images.unsplash.com/photo-1538488881038-e252a119ace7?auto=format&fit=crop&q=80&w=1000", subtitle: "EXPERIENCE", 
+                    fullDesc: `[이동 경로 상세]
+아사쿠사역(긴자선) → 긴자역 환승(히비야선) → 에비스역 하차. 
+동쪽 출구 '에비스 스카이워크'를 이용하면 에어컨 바람 아래 무빙워크로 쾌적하게 이동 가능합니다. 
+1시~2시 맥주 시음을 목표로 관람하세요.`, 
+                    extra: "YEBISU BREWERY TOKYO", query: "YEBISU BREWERY TOKYO"
                 },
-                { id: "tokyo_station", time: "15:00", title: "도쿄역 및 고쿄 투어", desc: "고쿄 내부 투어 및 스타벅스 뷰", icon: "fa-landmark", color: "red", img: "https://images.unsplash.com/photo-1582281227059-7d0abc4f890b?q=80&w=600&auto=format&fit=crop", subtitle: "TOUR", 
-                    fullDesc: `에비스역에서 전철로 도쿄역 이동 (약 30분 / 210엔). 
-도쿄역 앞 고쿄(황거) 가이엔을 산책하며 선착순 현장 접수 투어를 노려봅니다. 
-이후 도쿄역 광장 뷰가 예쁜 근처 스타벅스에서 휴식을 취합니다.`, 
-                    extra: "고쿄 투어는 선착순 300명 (신분증 지참 필수)", map: "https://www.google.com/maps/place/Imperial+Palace+East+Garden" 
+                { id: "tokyo_st", time: "15:00", title: "도쿄역 및 고쿄 투어", desc: "도쿄역 광장 산책 및 내부 투어", icon: "fa-landmark", color: "red", 
+                    img: "image_e083c4.jpg", subtitle: "TOUR", 
+                    fullDesc: `에비스에서 JR 야마노테선으로 도쿄역 이동. 
+도쿄역 마루노우치 북구 광장의 화려한 건축물을 구경하고 고쿄(황거) 외원을 산책합니다. 
+근처 스타벅스 도쿄역 신마루빌딩점에서 도쿄역 전경을 보며 쉬어가세요.`, 
+                    extra: "Tokyo Station Marunouchi", query: "Tokyo Station Marunouchi"
                 },
-                { id: "dinner_seigou", time: "18:00", title: "석식: 니혼바시 야키니쿠 세이고", desc: "도쿄역 근처 고급 야키니쿠", icon: "fa-fire-burner", color: "amber", img: "https://images.unsplash.com/photo-1514355315815-2b64b0216b14?q=80&w=600&auto=format&fit=crop", subtitle: "DINNER", 
-                    fullDesc: `도쿄역에서 도보 또는 택시(6분) 거리에 있는 야키니쿠 세이고에서 저녁 식사를 합니다. 
-품질 좋은 와규를 부모님께 대접하기 좋은 조용한 분위기입니다.`, 
-                    extra: "사전 예약 권장 / Nihonbashi Yakiniku Seigou", map: "https://www.google.com/maps/search/Nihonbashi+Yakiniku+Seigou" 
+                { id: "seigou", time: "18:00", title: "니혼바시 야키니쿠 세이고", desc: "최고급 와규 저녁 식사", icon: "fa-fire-burner", color: "amber", 
+                    img: "image_e08389.jpg", subtitle: "DINNER", 
+                    fullDesc: `도쿄역에서 택시로 6분 거리입니다. 
+입안에서 녹는 와규를 부모님께 대접하세요. 가족 여행의 품격을 높여줄 식당입니다.`, 
+                    extra: "Nihonbashi Yakiniku Seigou", query: "Nihonbashi Yakiniku Seigou"
                 }
             ],
             3: [
-                { id: "ueno_park", time: "09:40", title: "우에노 공원 산책", desc: "시노바즈노이케 & 동쇼구 산책", icon: "fa-leaf", color: "green", img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=600&auto=format&fit=crop", subtitle: "PARK", 
-                    fullDesc: `[추천 코스]
-1. 시노바즈노이케 연못 산책 및 벤텐도 사당 구경.
-2. 우에노 동쇼구: 금빛의 화려한 신사 관람 (교토 분위기).
-3. 스타벅스 우에노공원점: 사진 명소에서 분수 광장 구경.`, 
-                    extra: "숙소에서 우에노역 이동 (약 40분 / 210엔)", map: "https://www.google.com/maps/place/Ueno+Park" 
+                { id: "ueno", time: "09:40", title: "우에노 공원 산책", desc: "시노바즈노이케 & 금빛 신사 산책", icon: "fa-leaf", color: "green", 
+                    img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=1000", subtitle: "PARK", 
+                    fullDesc: `일요일 오전의 여유를 만끽하세요. 
+연못 주변을 걷고 '우에노 동쇼구'의 화려한 금빛 건물을 구경하는 코스를 추천합니다.`, 
+                    extra: "Ueno Park", query: "Ueno Park"
                 },
-                { id: "lunch_unatoto", time: "11:15", title: "중식: 나다이 우나토토", desc: "우에노의 가성비 숯불 장어덮밥", icon: "fa-bowl-food", color: "amber", img: "https://images.unsplash.com/photo-1608882585465-b772714a601e?q=80&w=600&auto=format&fit=crop", subtitle: "LUNCH", 
-                    fullDesc: `숯불 향이 가득한 장어덮밥 전문점입니다. 
-11시 30분 이후엔 대기가 길어지므로 오픈 시간에 맞춰 도착하는 것이 좋습니다. 
-'우나동 더블'이 가성비가 가장 좋습니다.`, 
-                    extra: "우나동 더블 (1,100엔) 추천", map: "https://www.google.com/maps/search/Nadai+Unatoto+Ueno" 
+                { id: "unatoto", time: "11:15", title: "나다이 우나토토 우에노점", desc: "숯불 장어덮밥 가성비 맛집", icon: "fa-bowl-rice", color: "amber", 
+                    img: "image_e080c1.jpg", subtitle: "LUNCH", 
+                    fullDesc: `11시 30분 이후 대기가 길어지므로 11시 15분 도착을 권장합니다. 
+'우나동 더블'은 숯불향 가득한 장어가 두 조각 올라가 만족도가 높습니다.`, 
+                    extra: "Nadai Unatoto Ueno", query: "Nadai Unatoto Ueno"
                 },
-                { id: "sensoji", time: "13:00", title: "아사쿠사 센소지 & 쇼핑", desc: "나카미세도리 구경 및 돈키호테", icon: "fa-torii-gate", color: "red", img: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=600&auto=format&fit=crop", subtitle: "TRADITION", 
-                    fullDesc: `가미나리몬부터 센소지 본당까지 산책하며 길거리 간식을 즐깁니다. 
-이후 돈키호테 아사쿠사점에서 기념품 쇼핑을 진행합니다. 
-쇼핑 후 저녁 웨이팅을 위해 4시 15분까지 식당으로 이동해야 합니다.`, 
-                    extra: "돈키호테 아사쿠사점은 24시간 운영", map: "https://www.google.com/maps/place/Senso-ji" 
+                { id: "sensoji", time: "13:30", title: "아사쿠사 센소지 & 쇼핑", desc: "도쿄에서 가장 유명한 절 관광", icon: "fa-torii-gate", color: "red", 
+                    img: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&q=80&w=1000", subtitle: "TRADITION", 
+                    fullDesc: `붉은 등 가미나리몬을 지나 상점가 나카미세도리를 구경합니다. 
+이후 돈키호테 아사쿠사점에서 기념품 쇼핑을 하세요. 
+※ 주의: 저녁 규카츠 웨이팅을 위해 4시 15분엔 이동해야 합니다!`, 
+                    extra: "Senso-ji Temple", query: "Senso-ji"
                 },
-                { id: "dinner_gyukatsu", time: "16:15", title: "석식: 아사쿠사 규카츠", desc: "도쿄 최고의 웨이팅 맛집 (4시 15분 줄 서기)", icon: "fa-utensils", color: "amber", img: "https://images.unsplash.com/photo-1591814448473-7027b515b67a?q=80&w=600&auto=format&fit=crop", subtitle: "FINAL DINNER", 
-                    fullDesc: `웨이팅이 극악이기로 유명한 곳입니다. 일요일 저녁은 4시 15분~30분경 미리 줄을 서야 5시 이후 식사가 가능합니다. 
-겉은 바삭하고 속은 부드러운 규카츠를 개인 화로에 구워 먹는 재미가 있습니다.`, 
-                    extra: "규카츠 정식 (1,630엔) / 마(토로로) 추가 추천", map: "https://www.google.com/maps/search/Asakusa+Gyukatsu" 
+                { id: "gyukatsu", time: "16:15", title: "아사쿠사 규카츠", desc: "도쿄 웨이팅 1위 맛집 사수", icon: "fa-utensils", color: "amber", 
+                    img: "image_e0809e.jpg", subtitle: "DINNER", 
+                    fullDesc: `극악의 웨이팅으로 유명한 곳입니다. 4시 15분~30분 사이에 미리 줄을 서야 저녁 일정이 원활합니다. 
+부모님께 부드러운 규카츠의 신세계를 보여주세요.`, 
+                    extra: "Asakusa Gyukatsu", query: "Asakusa Gyukatsu"
                 }
             ],
             4: [
-                { id: "airport", time: "07:30", title: "나리타 T3 이동", desc: "귀국 준비 및 공항 이동", icon: "fa-train", color: "gray", img: "https://images.unsplash.com/photo-1528150177508-7cc0c36cda5c?q=80&w=600&auto=format&fit=crop", subtitle: "DEPARTURE", 
+                { id: "airport", time: "07:30", title: "공항 이동 및 귀국", desc: "나리타 T3 안전 귀국 (10:35 출발)", icon: "fa-plane-departure", color: "gray", 
+                    img: "image_e08063.jpg", subtitle: "HOME", 
                     fullDesc: `10:35분 비행기이므로 아침 일찍 숙소에서 출발합니다. 
-오시아게역에서 공항행 Access Express를 타거나 우에노역에서 스카이라이너를 이용합니다. 
-T3 도착 후 위탁 수하물 부치고 면세점 구경 후 탑승합니다.`, 
-                    extra: "오전 08:35분까지 공항 도착 권장", map: "https://www.google.com/maps/place/Narita+International+Airport+Terminal+3" 
+T3 체크인 후 수하물을 보내고 면세점 쇼핑 후 탑승합니다.`, 
+                    extra: "Narita Airport Terminal 3", query: "Narita Airport Terminal 3"
                 }
             ]
         };
 
+        let currentDay = 1;
+
         function switchTab(day) {
+            currentDay = day;
             for(let i=1; i<=4; i++) {
                 const tab = document.getElementById(`tab-${i}`);
                 if (i === day) {
@@ -313,24 +293,42 @@ T3 도착 후 위탁 수하물 부치고 면세점 구경 후 탑승합니다.`,
             const events = itineraryData[day];
             let html = '<div class="timeline-line"></div>';
 
-            events.forEach((event) => {
-                const colorClasses = {
-                    blue: 'bg-blue-100 text-blue-600', amber: 'bg-amber-100 text-amber-600',
-                    green: 'bg-green-100 text-green-600', red: 'bg-red-100 text-red-600',
-                    purple: 'bg-purple-100 text-purple-600', gray: 'bg-gray-100 text-gray-600'
+            events.forEach((event, index) => {
+                const colorMap = {
+                    blue: 'bg-blue-100 text-blue-600',
+                    amber: 'bg-amber-100 text-amber-600',
+                    green: 'bg-green-100 text-green-600',
+                    red: 'bg-red-100 text-red-600',
+                    purple: 'bg-purple-100 text-purple-600',
+                    gray: 'bg-gray-100 text-gray-600'
                 };
 
+                let directionsBtn = "";
+                if (index > 0) {
+                    const prevQuery = events[index-1].query;
+                    const destQuery = event.query;
+                    const googleDirectionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(prevQuery)}&destination=${encodeURIComponent(destQuery)}&travelmode=transit`;
+                    
+                    directionsBtn = `
+                        <a href="${googleDirectionsUrl}" target="_blank" class="inline-flex items-center mt-4 text-[11px] font-black text-amber-800 bg-amber-50/50 px-4 py-2 rounded-2xl border border-amber-100/30 active:scale-95 transition-transform">
+                            <i class="fa-solid fa-route mr-2"></i> 이전 장소에서 오는 길 확인
+                        </a>
+                    `;
+                }
+
                 html += `
-                    <div class="relative pl-12 interactive-btn" onclick="openModal('${day}', '${event.id}')">
-                        <div class="absolute left-0 top-1 w-10 h-10 rounded-full ${colorClasses[event.color] || 'bg-gray-100'} flex items-center justify-center border-4 border-white shadow-md z-10 text-xs">
-                            <i class="fa-solid ${event.icon}"></i>
+                    <div class="relative pl-14">
+                        <div class="absolute left-0 top-1.5 w-12 h-12 rounded-[20px] ${colorMap[event.color]} flex items-center justify-center border-4 border-white shadow-xl z-10" onclick="openModal(${day}, '${event.id}')">
+                            <i class="fa-solid ${event.icon} text-base"></i>
                         </div>
-                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 shadow-sm active:bg-gray-100 transition-all">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-gray-800 text-sm">${event.title}</span>
-                                <span class="text-[10px] font-bold text-gray-400 bg-white px-2 py-0.5 rounded-full border border-gray-100">${event.time}</span>
+                        <div class="event-card bg-white rounded-[32px] p-6 border border-gray-50 shadow-sm shadow-gray-100/50" onclick="openModal(${day}, '${event.id}')">
+                            <div class="flex justify-between items-center mb-2.5">
+                                <span class="text-[11px] font-black text-gray-300 uppercase tracking-[0.2em]">${event.time}</span>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-gray-200"></i>
                             </div>
-                            <p class="text-gray-500 text-[11px] leading-tight">${event.desc}</p>
+                            <h4 class="font-black text-gray-900 text-lg mb-1 tracking-tight">${event.title}</h4>
+                            <p class="text-gray-400 text-[12px] leading-snug font-medium">${event.desc}</p>
+                            ${directionsBtn}
                         </div>
                     </div>
                 `;
@@ -347,7 +345,7 @@ T3 도착 후 위탁 수하물 부치고 면세점 구경 후 탑승합니다.`,
             document.getElementById('modal-subtitle').innerText = event.subtitle;
             document.getElementById('modal-desc').innerText = event.fullDesc;
             document.getElementById('modal-extra').innerText = event.extra;
-            document.getElementById('modal-map-link').href = event.map;
+            document.getElementById('modal-map-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.query)}`;
             
             const modal = document.getElementById('details-modal');
             modal.classList.remove('modal-hidden');
@@ -360,38 +358,42 @@ T3 도착 후 위탁 수하물 부치고 면세점 구경 후 탑승합니다.`,
             document.body.style.overflow = 'auto';
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        function closeModalOnBackdrop(e) {
+            if (e.target.id === 'details-modal') closeModal();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
             switchTab(1);
 
-            const ctx = document.getElementById('budgetChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['식비', '교통', '기타'],
-                    datasets: [{
-                        data: [180000, 45000, 30000],
-                        backgroundColor: ['#f87171', '#fbbf24', '#9ca3af'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) { return ' ' + context.label + ': ' + context.raw.toLocaleString() + '엔'; }
+            const canvas = document.getElementById('budgetChart');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['식비', '교통', '기타'],
+                        datasets: [{
+                            data: [180000, 45000, 30000],
+                            backgroundColor: ['#f8d7da', '#fff3cd', '#e2e3e5'],
+                            borderWidth: 0,
+                            hoverOffset: 12
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '80%',
+                        plugins: {
+                            legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11, weight: 'bold' }, padding: 25 } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) { return ' ' + context.label + ': ' + context.raw.toLocaleString() + '엔'; }
+                                }
                             }
                         }
                     }
-                }
-            });
-
-            document.getElementById('details-modal').addEventListener('click', function(e) {
-                if(e.target === this) closeModal();
-            });
+                });
+            }
         });
     </script>
 </body>
