@@ -61,6 +61,13 @@
             transition: all 0.2s ease;
         }
         .event-card:active { transform: scale(0.97); background-color: #f8f9fa; }
+
+        #modal-image {
+            background-color: #e5e7eb;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col">
@@ -68,7 +75,7 @@
     <!-- Modal -->
     <div id="details-modal" class="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm modal-hidden" onclick="closeModalOnBackdrop(event)">
         <div class="modal-content bg-white w-full max-w-lg rounded-t-[40px] sm:rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
-            <div id="modal-image" class="h-64 w-full bg-cover bg-center relative">
+            <div id="modal-image" class="h-64 w-full relative">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                 <button onclick="closeModal()" class="absolute top-6 right-6 bg-white/10 backdrop-blur-md text-white w-10 h-10 rounded-full flex items-center justify-center border border-white/20">
                     <i class="fa-solid fa-xmark"></i>
@@ -157,7 +164,7 @@
             </div>
         </section>
 
-        <!-- Budget Section (Restored to fix JS error) -->
+        <!-- Budget Section -->
         <section class="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100">
             <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-6">💰 예상 현지 지출 (4인)</h3>
             <div class="h-[220px] relative">
@@ -176,7 +183,7 @@
             1: [
                 { 
                     id: "nrt", time: "18:05", title: "나리타 제3터미널 도착", desc: "도착 후 셔틀버스로 T2 이동하여 기차 탑승", icon: "fa-plane-arrival", color: "blue", 
-                    img: "image_e08063.jpg", subtitle: "ARRIVAL", 
+                    img: "나리타 공항 3터미널.jfif", subtitle: "ARRIVAL", 
                     fullDesc: `[나리타 공항 T3 → 시내 진입 가이드]
 
 1. 터미널 이동: 에어로케이는 제3터미널(T3)에 내립니다. 기차역이 없으므로 무료 셔틀버스를 타고 제2터미널(T2)로 가야 합니다. (셔틀 5분 / 도보 비추천)
@@ -207,7 +214,7 @@
             ],
             2: [
                 { id: "shinpachi", time: "08:00", title: "신파치 쇼쿠도 아사쿠사", desc: "숯불 생선구이 정갈한 가정식", icon: "fa-bowl-rice", color: "green", 
-                    img: "image_e07fed.jpg", subtitle: "BREAKFAST", 
+                    img: "신파치 쇼쿠도.jfif", subtitle: "BREAKFAST", 
                     fullDesc: `부모님이 가장 좋아하실 숯불 생선구이 백반입니다. 
 따끈한 밥과 미소된장국으로 활기찬 하루를 시작하세요.`, 
                     extra: "Shinpachi Shokudo Asakusa", query: "Shinpachi Shokudo Asakusa"
@@ -221,14 +228,14 @@
                     extra: "YEBISU BREWERY TOKYO", query: "YEBISU BREWERY TOKYO"
                 },
                 { id: "tokyo_st", time: "15:00", title: "도쿄역 및 고쿄 투어", desc: "도쿄역 광장 산책 및 내부 투어", icon: "fa-landmark", color: "red", 
-                    img: "image_e083c4.jpg", subtitle: "TOUR", 
+                    img: "도코역 이미지.jfif", subtitle: "TOUR", 
                     fullDesc: `에비스에서 JR 야마노테선으로 도쿄역 이동. 
 도쿄역 마루노우치 북구 광장의 화려한 건축물을 구경하고 고쿄(황거) 외원을 산책합니다. 
 근처 스타벅스 도쿄역 신마루빌딩점에서 도쿄역 전경을 보며 쉬어가세요.`, 
                     extra: "Tokyo Station Marunouchi", query: "Tokyo Station Marunouchi"
                 },
                 { id: "seigou", time: "18:00", title: "니혼바시 야키니쿠 세이고", desc: "최고급 와규 저녁 식사", icon: "fa-fire-burner", color: "amber", 
-                    img: "image_e08389.jpg", subtitle: "DINNER", 
+                    img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=1000", subtitle: "DINNER", 
                     fullDesc: `도쿄역에서 택시로 6분 거리입니다. 
 입안에서 녹는 와규를 부모님께 대접하세요. 가족 여행의 품격을 높여줄 식당입니다.`, 
                     extra: "Nihonbashi Yakiniku Seigou", query: "Nihonbashi Yakiniku Seigou"
@@ -242,7 +249,7 @@
                     extra: "Ueno Park", query: "Ueno Park"
                 },
                 { id: "unatoto", time: "11:15", title: "나다이 우나토토 우에노점", desc: "숯불 장어덮밥 가성비 맛집", icon: "fa-bowl-rice", color: "amber", 
-                    img: "image_e080c1.jpg", subtitle: "LUNCH", 
+                    img: "나다이 우나토토.jfif", subtitle: "LUNCH", 
                     fullDesc: `11시 30분 이후 대기가 길어지므로 11시 15분 도착을 권장합니다. 
 '우나동 더블'은 숯불향 가득한 장어가 두 조각 올라가 만족도가 높습니다.`, 
                     extra: "Nadai Unatoto Ueno", query: "Nadai Unatoto Ueno"
@@ -255,7 +262,7 @@
                     extra: "Senso-ji Temple", query: "Senso-ji"
                 },
                 { id: "gyukatsu", time: "16:15", title: "아사쿠사 규카츠", desc: "도쿄 웨이팅 1위 맛집 사수", icon: "fa-utensils", color: "amber", 
-                    img: "image_e0809e.jpg", subtitle: "DINNER", 
+                    img: "아사쿠사 규카츠.jfif", subtitle: "DINNER", 
                     fullDesc: `극악의 웨이팅으로 유명한 곳입니다. 4시 15분~30분 사이에 미리 줄을 서야 저녁 일정이 원활합니다. 
 부모님께 부드러운 규카츠의 신세계를 보여주세요.`, 
                     extra: "Asakusa Gyukatsu", query: "Asakusa Gyukatsu"
@@ -263,7 +270,7 @@
             ],
             4: [
                 { id: "airport", time: "07:30", title: "공항 이동 및 귀국", desc: "나리타 T3 안전 귀국 (10:35 출발)", icon: "fa-plane-departure", color: "gray", 
-                    img: "image_e08063.jpg", subtitle: "HOME", 
+                    img: "나리타 공항 3터미널.jfif", subtitle: "HOME", 
                     fullDesc: `10:35분 비행기이므로 아침 일찍 숙소에서 출발합니다. 
 T3 체크인 후 수하물을 보내고 면세점 쇼핑 후 탑승합니다.`, 
                     extra: "Narita Airport Terminal 3", query: "Narita Airport Terminal 3"
